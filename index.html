@@ -29,7 +29,7 @@
             padding: 18px 17px 18px 20px;
             display: flex;
             align-items: center;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             position: relative;
             min-width: 238px;
             width: fit-content;
@@ -41,12 +41,12 @@
 
         .widget-container:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .widget-container:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
         }
 
         .profile-section {
@@ -55,7 +55,7 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 10;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.03));
         }
 
         .profile-image {
@@ -280,7 +280,7 @@
         }
 
         // 색상 변경 기능
-        const colors = ['#FFCEE4', '#B5E3F0', '#CEB7F0', '#D2EEDC'];
+        const colors = ['#FFCEE4', '#D1F0FF', '#E4D1FF', '#C2DCC8'];
         let currentColorIndex = 0;
 
         function changeColors() {
