@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Widget</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .widget-container {
+            background: #FFCEE4;
+            border-radius: 20px;
+            padding: 18px 17px 18px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            position: relative;
+            min-width: 238px;
+            width: fit-content;
+            height: 110px;
+            margin-left: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .widget-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .widget-container:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .profile-section {
+            position: absolute;
+            left: -36px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+        }
+
+        .profile-image {
+            width: 77px;
+            height: 77px;
+            border-radius: 50%;
+            border: 0.5px solid #FFFFFF;
+            background: #FFFFFF;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .default-avatar {
+            width: 85%;
+            height: 85%;
+            background: linear-gradient(135deg, #FFD4E5 0%, #FFA8D1 100%);
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .default-avatar::before,
+        .default-avatar::after {
+            content: '';
+            position: absolute;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        .default-avatar::before {
+            width: 8px;
+            height: 10px;
+            top: 35%;
+            left: 28%;
+        }
+
+        .default-avatar::after {
+            width: 8px;
+            height: 10px;
+            top: 35%;
+            right: 28%;
+        }
+
+        .heart-badge {
+            position: absolute;
+            bottom: 0;
+            right: -6px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            color: #FFCEE4;
+            text-shadow: 2px 0 0 #FFFFFF, -2px 0 0 #FFFFFF, 0 2px 0 #FFFFFF, 0 -2px 0 #FFFFFF;
+            transition: color 0.2s ease;
+        }
+
+        .clock-section {
+            color: #FFFFFF;
+            margin-left: 38px;
+            padding-right: 8px;
+        }
+
+        .time-display {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .time {
+            font-size: 55px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .period {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-left: -3px;
+        }
+
+        .date-display {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.95;
+            margin-left: 5px;
+        }
+
+        .date-text {
+            display: flex;
+            gap: 6px;
+        }
+
+        .date-decoration {
+            margin-left: 4px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 400px) {
+            .widget-container {
+                min-width: 213px;
+                height: 100px;
+                padding: 16px 14px 16px 18px;
+            }
+
+            .profile-section {
+                left: -32px;
+            }
+
+            .profile-image {
+                width: 64px;
+                height: 64px;
+            }
+
+            .clock-section {
+                margin-left: 38px;
+                padding-right: 4px;
+            }
+
+            .time {
+                font-size: 48px;
+            }
+
+            .date-display {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <div class="profile-section">
+            <div class="profile-image" id="profileImage">
+                <div class="default-avatar"></div>
+            </div>
+            <div class="heart-badge">♥</div>
+        </div>
+        
+        <div class="clock-section">
+            <div class="time-display">
+                <span class="time" id="time">12:00</span>
+                <span class="period" id="period">AM</span>
+            </div>
+            <div class="date-display">
+                <span class="date-text">
+                    <span id="day">MON</span>
+                    <span id="month">JAN</span>
+                    <span id="date">1</span>
+                </span>
+                <span class="date-decoration">₊˚ ♡</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // 시간 업데이트
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const period = hours >= 12 ? 'PM' : 'AM';
+            
+            // 12시간제 변환
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            
+            // 시간 표시
+            const timeString = `${hours}:${minutes.toString().padStart(2, '0')}`;
+            document.getElementById('time').textContent = timeString;
+            document.getElementById('period').textContent = period;
+            
+            // 날짜 업데이트
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            
+            document.getElementById('day').textContent = days[now.getDay()];
+            document.getElementById('month').textContent = months[now.getMonth()];
+            document.getElementById('date').textContent = now.getDate();
+        }
+
+        function loadProfileImage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imageUrl = urlParams.get('image');
+            
+            if (imageUrl) {
+                const profileDiv = document.getElementById('profileImage');
+                const img = document.createElement('img');
+                img.src = decodeURIComponent(imageUrl);
+                img.onerror = function() {
+                    // 이미지 로드 실패 시 기본 아바타 유지
+                    this.style.display = 'none';
+                };
+                img.onload = function() {
+                    // 이미지 로드 성공 시 기본 아바타 제거
+                    const defaultAvatar = profileDiv.querySelector('.default-avatar');
+                    if (defaultAvatar) {
+                        defaultAvatar.remove();
+                    }
+                };
+                profileDiv.appendChild(img);
+            }
+        }
+
+        // 색상 변경 기능
+        const colors = ['#FFCEE4', '#B5E3F0', '#CEB7F0', '#D2EEDC'];
+        let currentColorIndex = 0;
+
+        function changeColors() {
+            const container = document.querySelector('.widget-container');
+            const heart = document.querySelector('.heart-badge');
+            
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            const newColor = colors[currentColorIndex];
+            
+            container.style.background = newColor;
+            heart.style.color = newColor;
+            
+            // 그림자 색상도 업데이트
+            const rgb = hexToRgb(newColor);
+            container.style.boxShadow = `0 8px 32px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // 위젯 컨테이너 클릭 이벤트
+        document.querySelector('.widget-container').addEventListener('click', changeColors);
+
+        // 초기 실행
+        updateClock();
+        loadProfileImage();
+        
+        // 1초마다 업데이트
+        setInterval(updateClock, 1000);
+        
+        // 페이지 표시 시 즉시 업데이트
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                updateClock();
+            }
+        });
+    </script>
+</body>
+</html>
