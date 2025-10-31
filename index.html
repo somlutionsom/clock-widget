@@ -320,25 +320,12 @@
             container.style.boxShadow = `0 2px 8px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.04)`;
         }
 
-        // URL 업데이트 함수
-        function updateURL(themeIndex) {
-            const url = new URL(window.location);
-            // 색상 이름 찾기
-            const color = colors[themeIndex];
-            const colorName = Object.keys(colorNames).find(key => colorNames[key] === color);
-            
-            if (colorName) {
-                url.searchParams.set('color', colorName);
-            }
-            window.history.pushState({}, '', url);
-        }
-
         function changeColors() {
             currentColorIndex = (currentColorIndex + 1) % colors.length;
             const newColor = colors[currentColorIndex];
             
             applyColor(newColor);
-            updateURL(currentColorIndex);
+            // URL은 업데이트하지 않음 - 새로고침 시 원래 색상으로 돌아감
         }
 
         function hexToRgb(hex) {
